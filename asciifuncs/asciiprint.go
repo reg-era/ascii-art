@@ -2,37 +2,62 @@ package ascii
 
 import (
 	"fmt"
-	"os"
+	"strings"
 )
 
-func AsciiCorrect(word string) {
-	sliceword := []rune(word)
-	for i := 0; i < len(sliceword); i++ {
-		if sliceword[i] == 92 && sliceword[i+1] == 110 {
-			sliceword[i] = '\n'
-			sliceword = append(sliceword[:i+1], sliceword[i+2:]...)
-			i--
+func CheckNewLine(word string) bool {
+	check := len(word) / 2
+	if len(word)%2 != 0 {
+		return false
+	}
+	count := 0
+	tab := strings.Split(word, "\\n")
+	for i := 0; i < len(tab)-1; i++ {
+		if tab[i] == "" {
+			count++
 		}
 	}
-	AsciiPrint(sliceword)
+	if count == check {
+		return true
+	} else {
+		return false
+	}
 }
 
-func AsciiPrint(tabword []rune) {
-	if len(tabword) == 0 {
-		os.Exit(0)
+func AsciiCorrect(word string) {
+	if len(word) == 0 {
+		return
 	}
-	fmt.Println(tabword)
-	for i := 0; i < 8; i++ {
-		for j := 0; j < len(tabword); j++ {
-			if tabword[j] == '\n' {
-				fmt.Println()
-				AsciiPrint(tabword[j+1:])
-				break
-			}
-			line := AsciiMap[tabword[j]][i]
-			fmt.Print(line)
+	res := strings.Split(word, "\\n")
+	AsciiProcess(res)
+}
 
+func AsciiProcess(tabword []string) {
+	for i := 0; i < len(tabword); i++ {
+		if len(tabword[i]) == 0 && i != len(tabword)-1 && len(tabword[i+1]) == 0 {
+			fmt.Println()
+			continue
 		}
-		//fmt.Println()
+		if len(tabword[i]) == 0 {
+			fmt.Println()
+			continue
+		} else {
+			tab := []rune(tabword[i])
+			AsciiPrint(tab)
+		}
+	}
+}
+
+func AsciiPrint(word []rune) {
+	if len(word) == 0 {
+		fmt.Println()
+		return
+	}
+	for i := 0; i < 8; i++ {
+		for j := 0; j < len(word); j++ {
+			line := AsciiMap[word[j]][i]
+			fmt.Print(line)
+		}
+		fmt.Println()
 	}
 }
