@@ -29,7 +29,7 @@ func main() {
 			fmt.Println(Danger + "ASCII-ART library not found")
 			os.Exit(0)
 		}
-		if file == "standard" || file == "thinkertoy" || file == "shadow" || file == "money"{
+		if file == "standard" || file == "thinkertoy" || file == "shadow" || file == "money" {
 			file += ".txt"
 		}
 		asciifile, err := os.Open("asciilib/" + file)
@@ -46,7 +46,7 @@ func main() {
 			}
 			return
 		} else {
-			ascii.AsciiCorrect(word)
+			ascii.AsciiProcess(word)
 		}
 	}
 }
