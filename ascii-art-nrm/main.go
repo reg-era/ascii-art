@@ -35,6 +35,6 @@ func main() {
 		}
 		return
 	} else {
-		ascii.AsciiCorrect(word)
+		ascii.AsciiProcess(word)
 	}
 }
