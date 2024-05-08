@@ -13,13 +13,13 @@ var Danger string = "❌ \033[31m"
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println(Danger + "Please insert text you want to print :)")
+		fmt.Println(Danger + "Please insert text and the forme you want to print :)\nUsage: go run . [STRING] [BANNER]")
 		os.Exit(0)
 	} else if len(args) == 1 {
-		fmt.Println(Danger + "Please inser the forme you want to print")
+		fmt.Println(Danger + "Please inser the forme you want to print\nUsage: go run . [STRING] [BANNER]")
 		os.Exit(0)
 	} else if len(args) > 2 {
-		fmt.Println(Danger + "Too many argument :)")
+		fmt.Println(Danger + "Too many argument :)\nUsage: go run . [STRING] [BANNER]")
 		os.Exit(0)
 	} else if len(args) == 2 {
 		word := args[0]
@@ -50,3 +50,4 @@ func main() {
 		}
 	}
 }
+
