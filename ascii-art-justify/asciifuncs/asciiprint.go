@@ -2,6 +2,7 @@ package ascii
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -21,7 +22,7 @@ func AsciiCreat(cont, fileOption string) {
 	os.WriteFile(fileOption, []byte(cont), 0o777)
 }
 
-func AsciiProcess(word, spc string) string {
+func AsciiProcess(word, spc, option string) string {
 	res := ""
 	if len(word) == 0 {
 		return res
@@ -33,25 +34,30 @@ func AsciiProcess(word, spc string) string {
 			continue
 		} else {
 			tab := []rune(tabword[i])
-			res = AsciiPrint(tab, spc)
+			res = AsciiPrint(tab, spc, option)
 		}
 	}
 	return res
 }
 
-func AsciiPrint(word []rune, spc string) string {
+func AsciiPrint(word []rune, spc string, option string) string {
 	res := ""
+	jstSpc := ""
 	if len(word) == 0 {
 		return "\n"
 	}
 	for i := 0; i < 8; i++ {
 		for j := 0; j < len(word); j++ {
 			if word[j] < ' ' || word[j] > '~' {
-				fmt.Println((Danger + "Character not found :("))
-				os.Exit(0)
+				log.Fatalln(Danger + "Character not found :(")
+			}
+			if option == "justify" && j != 0 {
+				jstSpc = spc
+			} else {
+				jstSpc = ""
 			}
 			line := AsciiMap[word[j]][i]
-			res += line
+			res += jstSpc + line
 		}
 		if i == 0 {
 			res = spc + res
@@ -62,5 +68,6 @@ func AsciiPrint(word []rune, spc string) string {
 		}
 		res += "\n" + spc
 	}
+
 	return res
 }

@@ -31,7 +31,7 @@ func main() {
 			}
 			return
 		} else {
-			fmt.Print(ascii.AsciiProcess(word, ""))
+			fmt.Print(ascii.AsciiProcess(word, "", ""))
 		}
 	case 3:
 		word := args[0]
