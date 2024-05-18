@@ -15,15 +15,17 @@ func main() {
 	if len(args) == 0 {
 		fmt.Println(Danger + "Please insert text and the forme you want to print :)\nUsage: go run . [STRING] [BANNER]")
 		os.Exit(0)
-	} else if len(args) == 1 {
-		fmt.Println(Danger + "Please inser the forme you want to print\nUsage: go run . [STRING] [BANNER]")
-		os.Exit(0)
 	} else if len(args) > 2 {
 		fmt.Println(Danger + "Too many argument :)\nUsage: go run . [STRING] [BANNER]")
 		os.Exit(0)
-	} else if len(args) == 2 {
+	} else if len(args) == 1 || len(args) == 2 {
 		word := args[0]
-		file := args[1]
+		file := ""
+		if len(args) == 2 {
+			file = args[1]
+		} else {
+			file = "standard.txt"
+		}
 
 		if file != "standard.txt" && file != "thinkertoy.txt" && file != "shadow.txt" && file != "standard" && file != "thinkertoy" && file != "shadow" && file != "money" && file != "money.txt" {
 			fmt.Println(Danger + "ASCII-ART library not found")
@@ -39,7 +41,7 @@ func main() {
 		}
 		defer asciifile.Close()
 		scanne := bufio.NewScanner(asciifile)
-		ascii.MapReload(scanne)
+		ascii.MapReload(scanne, word)
 		if len(word) != 1 && ascii.CheckNewLine(word) {
 			for i := 0; i < len(word)/2; i++ {
 				fmt.Println()
@@ -50,4 +52,3 @@ func main() {
 		}
 	}
 }
-

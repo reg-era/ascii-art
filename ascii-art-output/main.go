@@ -1,64 +1,47 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
 	ascii "ascii/asciifuncs"
 )
 
-var Danger string = "❌ \033[31m"
-
 func main() {
 	args := os.Args[1:]
-	
-	fileOption := ""
+
+	word := ""
+	banner := ""
+	filePrint := ""
+
+	fileOption := flag.String("output", "def", "output usage")
+	flag.Parse()
 
 	switch len(args) {
-	case 0:
-		fmt.Println(Danger + "Please insert text and the forme you want to print :)\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-		os.Exit(0)
 	case 1:
-		fmt.Println(Danger + "Please inser the forme you want to print\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-		os.Exit(0)
+		word = args[0]
+		ascii.AsciiReload("standard.txt", word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word), filePrint)
 	case 2:
-		word := args[0]
-		filePrint := args[1]
-		ascii.AsciiReload(ascii.AsciiSearch(filePrint))
-		if len(word) != 1 && ascii.CheckNewLine(word) {
-			for i := 0; i < len(word)/2; i++ {
-				fmt.Println()
-			}
-			return
+		if *fileOption == "def" {
+			word = args[0]
+			banner = args[1]
 		} else {
-			fmt.Print(ascii.AsciiProcess(word))
+			filePrint = *fileOption
+			word = args[1]
+			banner = "standard.txt"
 		}
+		ascii.AsciiReload(ascii.AsciiSearch(banner), word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word), filePrint)
 	case 3:
-		word := args[0]
-		filePrint := args[1]
-		option := args[2]
-		ascii.AsciiReload(ascii.AsciiSearch(filePrint))
-		if len(option) >= 9 && (option[:9] == "--output=" || option[:8] == "-output=") {
-			if option[:9] == "--output=" {
-				fileOption = option[9:]
-			} else {
-				fileOption = option[8:]
-			}
-			res := ""
-			if len(word) != 1 && ascii.CheckNewLine(word) {
-				for i := 0; i < len(word)/2; i++ {
-					res += "\n"
-				}
-				ascii.AsciiCreat(res, fileOption)
-			} else {
-				ascii.AsciiCreat(ascii.AsciiProcess(word), fileOption)
-			}
-		} else {
-			fmt.Println(Danger + "Please inser the option you want to print\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-			os.Exit(0)
-		}
+		word := args[1]
+		banner := args[2]
+		filePrint := *fileOption
+		ascii.AsciiReload(ascii.AsciiSearch(banner), word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word), filePrint)
 	default:
-		fmt.Println(Danger + "Too many argument :)\nUsage: go run . [STRING] [BANNER] [OPTION]")
+		fmt.Println("\033[31mUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
 		os.Exit(0)
 	}
 }

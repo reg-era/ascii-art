@@ -6,7 +6,7 @@ import (
 
 var AsciiMap = map[rune][]string{}
 
-func MapReload(scanner *bufio.Scanner) {
+func MapReload(scanner *bufio.Scanner, word string) {
 	count := 31
 	for scanner.Scan() {
 		asciichar := []string{}
@@ -22,8 +22,19 @@ func MapReload(scanner *bufio.Scanner) {
 					asciichar = append(asciichar, "      ")
 				}
 			}
-			AsciiMap[rune(count)] = append(AsciiMap[rune(count)], asciichar...)
+			if CheckChar(rune(count), word) {
+				AsciiMap[rune(count)] = append(AsciiMap[rune(count)], asciichar...)
+			}
 			count++
 		}
 	}
+}
+
+func CheckChar(r rune, text string) bool {
+	for _, char := range text {
+		if char == r {
+			return true
+		}
+	}
+	return false
 }

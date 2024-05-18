@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -12,54 +13,67 @@ var Danger string = "❌ \033[31m"
 func main() {
 	args := os.Args[1:]
 
-	color := ""
+	word := ""
+	banner := "standard.txt"
+	color := "white"
+	spcolor := ""
+	filePrint := ""
 
+	optionfile := flag.String("output", "def", "output usage")
+	optioncolor := flag.String("color", "def", "color usage")
+	flag.Parse()
 	switch len(args) {
-	case 0:
-		fmt.Println(Danger + "Please insert text and the forme you want to print :)\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-		os.Exit(0)
 	case 1:
-		fmt.Println(Danger + "Please inser the forme you want to print\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-		os.Exit(0)
+		word = args[0]
+		ascii.AsciiReload(banner, word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word, color, spcolor), filePrint)
 	case 2:
-		word := args[0]
-		filePrint := args[1]
-		ascii.AsciiReload(ascii.AsciiSearch(filePrint))
-		if len(word) != 1 && ascii.CheckNewLine(word) {
-			for i := 0; i < len(word)/2; i++ {
-				fmt.Println()
-			}
+		if ascii.IsBanner(args[1]) {
+			banner = args[1]
+			word = args[0]
+		} else if *optioncolor != "def" && *optionfile != "def" {
+			fmt.Println("sdsdscdscs")
 			return
 		} else {
-			fmt.Print(ascii.AsciiProcess(word))
+			word = args[1]
+			if *optioncolor != "def" {
+				color = *optioncolor
+			} else {
+				filePrint = *optionfile
+			}
 		}
+		ascii.AsciiReload(ascii.AsciiSearch(banner), word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word, color, spcolor), filePrint)
 	case 3:
-		word := args[0]
-		filePrint := args[1]
-		option := args[2]
-		ascii.AsciiReload(ascii.AsciiSearch(filePrint))
-		if len(option) >= 9 && (option[:8] == "--color=" || option[:7] == "-color=") {
-			if option[:8] == "--output=" {
-				color = option[8:]
+		if ascii.IsBanner(args[2]) && (*optioncolor == "def" || *optionfile == "def") {
+			word = args[1]
+			banner = args[2]
+			if *optioncolor != "def" {
+				color = *optioncolor
 			} else {
-				color = option[7:]
+				filePrint = *optionfile
 			}
-
-			ascii.AsciiReload(ascii.AsciiSearch(filePrint))
-			if len(word) != 1 && ascii.CheckNewLine(word) {
-				for i := 0; i < len(word)/2; i++ {
-					fmt.Println()
-				}
-				return
-			} else {
-				fmt.Print(ascii.SearchColor(color) + ascii.AsciiProcess(word))
-			}
+		} else if *optioncolor != "def" && *optionfile == "def" {
+			word = args[2]
+			spcolor = args[1]
+			color = *optioncolor
 		} else {
-			fmt.Println(Danger + "Please inser the option you want to print\nUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
-			os.Exit(0)
+			word = args[2]
+			color = *optioncolor
+			filePrint = *optionfile
 		}
+		ascii.AsciiReload(ascii.AsciiSearch(banner), word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word, color, spcolor), filePrint)
+	case 4:
+		word := args[2]
+		banner := args[3]
+		color := *optioncolor
+		filePrint := *optionfile
+		ascii.AsciiReload(ascii.AsciiSearch(banner), word)
+		ascii.AsciiCreat(ascii.AsciiProcess(word, color, spcolor), filePrint)
+	
 	default:
-		fmt.Println(Danger + "Too many argument :)\nUsage: go run . [STRING] [BANNER] [OPTION]")
+		fmt.Println("\033[31mUsage: go run . [STRING] [BANNER] [OPTION]\nExample: go run . something standard --output=<fileName.txt>")
 		os.Exit(0)
 	}
 }
