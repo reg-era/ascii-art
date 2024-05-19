@@ -52,13 +52,3 @@ func AsciiReload(banner string, word string) {
 	MapReload(scanne, word)
 }
 
-func AsciiSearch(filePrint string) string {
-	if filePrint == "standard" || filePrint == "thinkertoy" || filePrint == "shadow" || filePrint == "money" {
-		filePrint += ".txt"
-	}
-	if filePrint != "standard.txt" && filePrint != "thinkertoy.txt" && filePrint != "shadow.txt" && filePrint != "money.txt" {
-		fmt.Println(Danger + "ASCII-ART library not found")
-		os.Exit(0)
-	}
-	return filePrint
-}
