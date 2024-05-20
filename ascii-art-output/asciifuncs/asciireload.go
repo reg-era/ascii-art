@@ -51,4 +51,3 @@ func AsciiReload(banner string, word string) {
 	scanne := bufio.NewScanner(asciifile)
 	MapReload(scanne, word)
 }
-
